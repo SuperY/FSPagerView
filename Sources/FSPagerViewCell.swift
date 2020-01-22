@@ -25,9 +25,7 @@ open class FSPagerViewCell: UICollectionViewCell {
         textLabel.font = UIFont.preferredFont(forTextStyle: .body)
         self.contentView.addSubview(view)
         view.addSubview(textLabel)
-        
-        textLabel.addObserver(self, forKeyPath: "font", options: [.old,.new], context: kvoContext)
-        
+               
         _textLabel = textLabel
         return textLabel
     }
@@ -107,12 +105,6 @@ open class FSPagerViewCell: UICollectionViewCell {
         self.contentView.layer.shadowOffset = .zero
     }
     
-    deinit {
-        if let textLabel = _textLabel {
-            textLabel.removeObserver(self, forKeyPath: "font", context: kvoContext)
-        }
-    }
-    
     override open func layoutSubviews() {
         super.layoutSubviews()
         if let imageView = _imageView {
@@ -136,16 +128,6 @@ open class FSPagerViewCell: UICollectionViewCell {
         }
         if let selectedForegroundView = _selectedForegroundView {
             selectedForegroundView.frame = self.contentView.bounds
-        }
-    }
-
-    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if context == kvoContext {
-            if keyPath == "font" {
-                self.setNeedsLayout()
-            }
-        } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
     
